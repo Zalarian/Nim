@@ -72,8 +72,8 @@ type, the `of` operator can be used.
   echo student[]
 
 Inheritance is done with the `object of` syntax. Multiple inheritance is
-currently not supported. If an object type has no suitable ancestor, `RootObj`
-can be used as its ancestor, but this is only a convention. Objects that have
+currently **not** supported. If an object type has no suitable ancestor, `RootObj`
+can be used as its ancestor, but this is only by convention. Objects that have
 no ancestor are implicitly `final`. You can use the `inheritable` pragma
 to introduce new object roots apart from `system.RootObj`. (This is used
 in the GTK wrapper for instance.)
@@ -90,7 +90,7 @@ Nim, composition is as efficient as inheritance.
 Mutually recursive types
 ------------------------
 
-Objects, tuples and references can model quite complex data structures which
+Objects, tuples, and references can model quite complex data structures which
 depend on each other; they are *mutually recursive*. In Nim
 these types can only be declared within a single type section. (Anything else
 would require arbitrary symbol lookahead which slows down compilation.)
@@ -208,10 +208,10 @@ So "pure object oriented" code is easy to write:
 
 Properties
 ----------
-As the above example shows, Nim has no need for *get-properties*:
+As the above example shows, Nim has no need for *get-properties*.
 Ordinary get-procedures that are called with the *method call syntax* achieve
-the same. But setting a value is different; for this a special setter syntax
-is needed:
+the same result. Setting a value is different, however, and to do it a special 
+setter syntax is needed:
 
 .. code-block:: nim
     :test: "nim c $1"
@@ -299,8 +299,7 @@ method because it requires dynamic binding.
 **Note:** Starting from Nim 0.20, to use multi-methods one must explicitly pass
 ``--multimethods:on`` when compiling.
 
-In a multi-method all parameters that have an object type are used for the
-dispatching:
+In a multi-method all parameters that have an object type are used for dispatching:
 
 .. code-block:: nim
     :test: "nim c --multiMethods:on $1"
@@ -348,8 +347,8 @@ The compiler will prevent you from raising an exception created on the stack.
 All raised exceptions should at least specify the reason for being raised in
 the `msg` field.
 
-A convention is that exceptions should be raised in *exceptional* cases,
-they should not be used as an alternative method of control flow.
+The convention is that exceptions should be raised in *exceptional* cases.
+They should not be used as an alternative method of control flow.
 
 Raise statement
 ---------------
@@ -402,23 +401,23 @@ The `try` statement handles exceptions:
     finally:
       close(f)
 
-The statements after the `try` are executed unless an exception is
-raised. Then the appropriate `except` part is executed.
+The statements after the `try` block are executed unless an exception is
+raised; then the appropriate `except` block is executed.
 
-The empty `except` part is executed if there is an exception that is
-not explicitly listed. It is similar to an `else` part in `if`
-statements.
+The empty `except` block is executed if there is an exception that is
+not explicitly listed. It is similar to an `else` block in an `if`
+statement.
 
-If there is a `finally` part, it is always executed after the
+If there is a `finally` block, it is always executed after the
 exception handlers.
 
-The exception is *consumed* in an `except` part. If an exception is not
-handled, it is propagated through the call stack. This means that often
-the rest of the procedure - that is not within a `finally` clause -
-is not executed (if an exception occurs).
+The exception is *consumed* in an `except` block. If an exception is not
+handled, it is propagated through the call stack. This means that, if an
+exception occurs, the rest of the procedure that is *not* within a `finally`
+block is does not get executed.
 
 If you need to *access* the actual exception object or message inside an
-`except` branch you can use the `getCurrentException()
+`except` block you can use the `getCurrentException()
 <system.html#getCurrentException>`_ and `getCurrentExceptionMsg()
 <system.html#getCurrentExceptionMsg>`_ procs from the `system <system.html>`_
 module. Example:
@@ -450,11 +449,11 @@ prevent that proc from compiling. Usage example:
   proc simpleProc() {.raises: [].} =
     ...
 
-Once you have code like this in place, if the list of raised exception changes
-the compiler will stop with an error specifying the line of the proc which
-stopped validating the pragma and the raised exception not being caught, along
-with the file and line where the uncaught exception is being raised, which may
-help you locate the offending code which has changed.
+Once you have code like this in place, if the list of raised exceptions changes,
+the compiler will stop with an error specifying the line of the proc at which
+it stopped validating the pragma and the raised exception not being caught. The
+file and line where the uncaught exception is being raised, which may
+help you locate the offending code which has changed, are also included.
 
 If you want to add the `{.raises.}` pragma to existing code, the compiler can
 also help you. You can add the `{.effects.}` pragma statement to your proc and
@@ -471,7 +470,7 @@ Generics
 
 Generics are Nim's means to parametrize procs, iterators or types
 with `type parameters`:idx:. Generic parameters are written within square
-brackets, for example `Foo[T]`. They are most useful for efficient type safe
+brackets, for example `Foo[T]`. They are most useful for efficient type-safe
 containers:
 
 .. code-block:: nim
@@ -532,8 +531,8 @@ containers:
     stdout.writeLine(str)
 
 The example shows a generic binary tree. Depending on context, the brackets are
-used either to introduce type parameters or to instantiate a generic proc,
-iterator or type. As the example shows, generics work with overloading: the
+used to either introduce type parameters, instantiate a generic proc, iterator, 
+or type. As the example shows, generics work with overloading -- the
 best match of `add` is used. The built-in `add` procedure for sequences
 is not hidden and is used in the `preorder` iterator.
 
@@ -643,7 +642,7 @@ To pass a block of statements to a template, use `untyped` for the last paramete
 
 In the example the two `writeLine` statements are bound to the `body`
 parameter. The `withFile` template contains boilerplate code and helps to
-avoid a common bug: to forget to close the file. Note how the
+avoid a common bug -- forgetting to close the file. Note how the
 `let fn = filename` statement ensures that `filename` is evaluated only
 once.
 
@@ -682,8 +681,8 @@ JavaScript-compatible code you should remember the following:
   It is recommended to avoid those if you're not sure how they are translated
   to JavaScript.
 - `cast[T](x)` in JavaScript is translated to `(x)`, except for casting
-  between signed/unsigned ints, in which case it behaves as static cast in
-  C language.
+  between signed/unsigned ints; in which case it behaves like a static cast
+  as in C.
 - `cstring` in JavaScript means JavaScript string. It is a good practice to
   use `cstring` only when it is semantically appropriate. E.g. don't use
   `cstring` as a binary data buffer.
